@@ -1,0 +1,24 @@
+{
+  "name": "2dv515_a4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cccarle/2DV515_A4.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cccarle/2DV515_A4/issues"
+  },
+  "homepage": "https://github.com/cccarle/2DV515_A4#readme",
+  "dependencies": {
+    "neat-csv": "^5.1.0",
+    "nodemon": "^2.0.2"
+  }
+}
