@@ -18,22 +18,24 @@ Creates new key value for standard deviation in the array and add the result of 
 
 const calculateStandardDeviationForEveryProperty = flowerTrainingData => {
   flowerTrainingData.map(flower => {
-    ;(flower.sepal_length_st = st(
-      flower.map(flowerProperty => flowerProperty.sepal_length),
-      flower.sepal_length_mean
-    )),
-      (flower.sepal_width_st = st(
+    flower.std = {
+      sepal_length_st: st(
         flower.map(flowerProperty => flowerProperty.sepal_length),
-        flower.sepal_width_mean
-      )),
-      (flower.petal_length_st = st(
+        flower.means.sepal_length_mean
+      ),
+      sepal_width_st: st(
         flower.map(flowerProperty => flowerProperty.sepal_length),
-        flower.petal_length_mean
-      )),
-      (flower.petal_width = st(
+        flower.means.sepal_width_mean
+      ),
+      petal_length_st: st(
         flower.map(flowerProperty => flowerProperty.sepal_length),
-        flower.petal_width_mean
-      ))
+        flower.means.petal_length_mean
+      ),
+      petal_width_st: st(
+        flower.map(flowerProperty => flowerProperty.sepal_length),
+        flower.means.petal_width_mean
+      )
+    }
   })
 }
 
@@ -58,12 +60,13 @@ const calculateMeanForEveryProperty = flowerTrainingData => {
   flowerTrainingData.map(flower =>
     mean(
       ...flower.map(
-        flowerProperty => (
-          (flower.sepal_length_mean = flowerProperty.sepal_length),
-          (flower.sepal_width_mean = flowerProperty.sepal_width),
-          (flower.petal_length_mean = flowerProperty.petal_length),
-          (flower.petal_width_mean = flowerProperty.petal_width)
-        )
+        flowerProperty =>
+          (flower.means = {
+            sepal_length_mean: flowerProperty.sepal_length,
+            sepal_width_mean: flowerProperty.sepal_width,
+            petal_length_mean: flowerProperty.petal_length,
+            petal_width_mean: flowerProperty.petal_width
+          })
       )
     )
   )
@@ -75,8 +78,22 @@ Calculation for Mean/Average
 const mean = (...numbers) =>
   numbers.reduce((acc, val) => acc + val, 0) / numbers.length
 
+const createObjMeanAndStdValueForEachCategory = (
+  flowerTrainingData,
+  categories
+) => {
+  flowerTrainingData.map((category, i) =>
+    categories.push({
+      category: i,
+      means: category.means,
+      std: category.std
+    })
+  )
+}
+
 module.exports = {
   dividedByCategory,
   calculateStandardDeviationForEveryProperty,
-  calculateMeanForEveryProperty
+  calculateMeanForEveryProperty,
+  createObjMeanAndStdValueForEachCategory
 }
