@@ -41,18 +41,32 @@ class NaiveBayes {
 
   predict(x) {
     x.map(attribute => {
-      var size = Object.keys(attribute).length - 1
+      let size = Object.keys(attribute).length - 1
 
-      this.categories.map((category, i) => {
+      this.categories.map(category => {
         for (let index = 0; index < size; index++) {
           let x = attribute[Object.keys(attribute)[index]]
           let mean = category.means[Object.keys(category.means)[index]]
           let std = category.std[Object.keys(category.std)[index]]
-          attribute[index] = this.pdf(x, mean, std)
+          attribute[index] = Math.exp(Math.log(this.pdf(x, mean, std)))
+          console.log(attribute[index])
         }
-        console.log(attribute)
+
+        attribute.P =
+          attribute[Object.keys(attribute)[0]] *
+          attribute[Object.keys(attribute)[1]] *
+          attribute[Object.keys(attribute)[2]] *
+          attribute[Object.keys(attribute)[3]]
       })
     })
+
+    const sum = x.map(item => item.P).reduce((prev, curr) => prev + curr, 0)
+
+    //console.log(sum)
+
+    x.map(att => (att.pNorm = att.P / sum))
+
+    //  x.map(att => console.log(att))
   }
 }
 module.exports = NaiveBayes
