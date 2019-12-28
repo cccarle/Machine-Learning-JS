@@ -5,7 +5,7 @@ x = values
 y = labels
 */
 
-const dividedByCategory = (trainingData, x, y) => {
+const dividedByLabels = (trainingData, x, y) => {
   let unique = [...new Set(y)]
 
   unique.map(label => {
@@ -21,19 +21,19 @@ Creates new key value for standard deviation in the array and add the result of 
 const calculateStandardDeviationForEveryProperty = trainingData => {
   trainingData.map(data => {
     data.std = {
-      [0]: st(
+      [0]: std(
         data.map(dataProperty => dataProperty[0]),
         data.means[0]
       ),
-      [1]: st(
+      [1]: std(
         data.map(dataProperty => dataProperty[1]),
         data.means[1]
       ),
-      [2]: st(
+      [2]: std(
         data.map(dataProperty => dataProperty[2]),
         data.means[2]
       ),
-      [3]: st(
+      [3]: std(
         data.map(dataProperty => dataProperty[3]),
         data.means[3]
       )
@@ -45,9 +45,8 @@ const calculateStandardDeviationForEveryProperty = trainingData => {
 Calculation for Standard Deviation.
 */
 
-const st = (arr, mean) => {
+const std = (arr, mean) => {
   const n = arr.length
-
   return Math.sqrt(
     arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
   )
@@ -77,22 +76,27 @@ const calculateMeanForEveryProperty = trainingData => {
 /* 
 Calculation for Mean/Average
 */
-const mean = (...numbers) =>
-  numbers.reduce((acc, val) => acc + val, 0) / numbers.length
+const mean = (...numbers) => {
+  numbers.reduce((a, b) => a + b) / numbers.length
+}
 
-const createObjMeanAndStdValueForEachCategory = (trainingData, categories) => {
-  trainingData.map((category, i) =>
-    categories.push({
-      category: i,
-      means: category.means,
-      std: category.std
+/* 
+Create array with objects for each category
+*/
+
+const createObjMeanAndStdValueForEachLabels = (trainingData, labels) => {
+  trainingData.map((label, i) =>
+    labels.push({
+      labels: i,
+      means: label.means,
+      std: label.std
     })
   )
 }
 
 module.exports = {
-  dividedByCategory,
+  dividedByLabels,
   calculateStandardDeviationForEveryProperty,
   calculateMeanForEveryProperty,
-  createObjMeanAndStdValueForEachCategory
+  createObjMeanAndStdValueForEachLabels
 }

@@ -22,5 +22,4 @@ const bank = async () => {
 }
 
 iris()
-
 bank()
