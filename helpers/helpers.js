@@ -76,7 +76,7 @@ const calculateMeanForEveryProperty = flowerTrainingData => {
 Calculation for Mean/Average
 */
 const mean = (...numbers) =>
-  numbers.reduce((acc, val) => acc + val, 0) / numbers.length.toPrecision(2)
+  numbers.reduce((acc, val) => acc + val, 0) / numbers.length
 
 const createObjMeanAndStdValueForEachCategory = (
   flowerTrainingData,

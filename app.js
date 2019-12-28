@@ -6,19 +6,9 @@ const iris = async () => {
   const y = [0, 1, 2]
   const nv = new NaiveBayes()
   nv.fit(x, y)
-
-  let mock = [
-    {
-      sepal_length: 5.7,
-      sepal_width: 2.8,
-      petal_length: 1.6,
-      petal_width: 0.8,
-      species: 1
-    }
-  ]
-
-  // console.log(x)
-  nv.predict(mock)
+  let predictions = nv.predict(x)
+  let accuracyScore = nv.accuracyScore(predictions, y)
+  console.log(predictions)
 }
 
 iris()

@@ -20,6 +20,7 @@ class NaiveBayes {
     this.flowerTrainingData = []
     this.sum = []
     this.categories = []
+    this.predictions = []
   }
 
   fit(x, y) {
@@ -43,30 +44,42 @@ class NaiveBayes {
     x.map(attribute => {
       let size = Object.keys(attribute).length - 1
 
-      this.categories.map(category => {
+      this.categories.map((category, i) => {
+        let obj = {}
         for (let index = 0; index < size; index++) {
           let x = attribute[Object.keys(attribute)[index]]
           let mean = category.means[Object.keys(category.means)[index]]
           let std = category.std[Object.keys(category.std)[index]]
-          attribute[index] = Math.exp(Math.log(this.pdf(x, mean, std)))
-          console.log(attribute[index])
+          let cat = category.category
+          obj[index] = Math.exp(Math.log(this.pdf(x, mean, std)))
+
+          obj.category = cat
+          obj.P =
+            obj[Object.keys(obj)[0]] *
+            obj[Object.keys(obj)[1]] *
+            obj[Object.keys(obj)[2]] *
+            obj[Object.keys(obj)[3]]
         }
 
-        attribute.P =
-          attribute[Object.keys(attribute)[0]] *
-          attribute[Object.keys(attribute)[1]] *
-          attribute[Object.keys(attribute)[2]] *
-          attribute[Object.keys(attribute)[3]]
+        this.sum.push({ label: obj.category, PDF: obj, P: obj.P })
       })
+
+      const sum = this.sum
+        .map(item => item.P)
+        .reduce((prev, curr) => prev + curr, 0) // sum of P
+
+      this.sum.map(att => (att.p_norm = att.P / sum)) // normalize
+
+      const classifed = this.sum.reduce((prev, current) =>
+        prev.p_norm > current.p_norm ? prev : current
+      )
+
+      this.predictions.push(classifed)
     })
 
-    const sum = x.map(item => item.P).reduce((prev, curr) => prev + curr, 0)
-
-    //console.log(sum)
-
-    x.map(att => (att.pNorm = att.P / sum))
-
-    //  x.map(att => console.log(att))
+    return this.predictions
   }
+
+  accuracyScore(predictions, y) {}
 }
 module.exports = NaiveBayes
