@@ -94,9 +94,16 @@ const createObjMeanAndStdValueForEachLabels = (trainingData, labels) => {
   )
 }
 
+/* 
+Creates matrixsheet, the structure.
+*/
+const createMatrixSheet = label => {
+  return label.map(() => Array(label.length).fill(0))
+}
 module.exports = {
   dividedByLabels,
   calculateStandardDeviationForEveryProperty,
   calculateMeanForEveryProperty,
-  createObjMeanAndStdValueForEachLabels
+  createObjMeanAndStdValueForEachLabels,
+  createMatrixSheet
 }

@@ -2,7 +2,8 @@ const {
   dividedByLabels,
   calculateStandardDeviationForEveryProperty,
   calculateMeanForEveryProperty,
-  createObjMeanAndStdValueForEachLabels
+  createObjMeanAndStdValueForEachLabels,
+  createMatrixSheet
 } = require('./../helpers/helpers')
 
 /* 
@@ -93,6 +94,18 @@ class NaiveBayes {
       ` (${counter}/${predictions.length} correctly classified)`
 
     return accuracy
+  }
+
+  confusion_matrix(predictions, y) {
+    const uniqueLabels = [...new Set(y)]
+    const matrixSheet = createMatrixSheet(uniqueLabels)
+
+    for (let i = 0; i < predictions.length; i++) {
+      matrixSheet[y[i]][predictions[i].labels] =
+        matrixSheet[y[i]][predictions[i].labels] + 1
+    }
+
+    return matrixSheet
   }
 }
 module.exports = NaiveBayes
