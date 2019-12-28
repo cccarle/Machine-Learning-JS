@@ -7,8 +7,7 @@ const iris = async () => {
   const nv = new NaiveBayes()
   nv.fit(x, y)
   let predictions = nv.predict(x)
-  let accuracyScore = nv.accuracyScore(predictions, y)
-  console.log(predictions)
+  let accuracyScore = nv.accuracyScore(predictions, x)
 }
 
 iris()

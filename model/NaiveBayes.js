@@ -42,6 +42,7 @@ class NaiveBayes {
 
   predict(x) {
     x.map(attribute => {
+      let temp = []
       let size = Object.keys(attribute).length - 1
 
       this.categories.map((category, i) => {
@@ -61,16 +62,16 @@ class NaiveBayes {
             obj[Object.keys(obj)[3]]
         }
 
-        this.sum.push({ label: obj.category, PDF: obj, P: obj.P })
+        temp.push({ label: obj.category, PDF: obj, P: obj.P })
       })
 
-      const sum = this.sum
+      const sum = temp
         .map(item => item.P)
         .reduce((prev, curr) => prev + curr, 0) // sum of P
 
-      this.sum.map(att => (att.p_norm = att.P / sum)) // normalize
+      temp.map(att => (att.p_norm = att.P / sum)) // normalize
 
-      const classifed = this.sum.reduce((prev, current) =>
+      const classifed = temp.reduce((prev, current) =>
         prev.p_norm > current.p_norm ? prev : current
       )
 
@@ -80,6 +81,22 @@ class NaiveBayes {
     return this.predictions
   }
 
-  accuracyScore(predictions, y) {}
+  accuracyScore(predictions, y) {
+    let counter = 0
+
+    for (let i = 0; i < y.length; i++) {
+      if (predictions[i].label === y[i].species) {
+        counter++
+      }
+    }
+
+    let score = counter / predictions.length
+
+    console.log(
+      (score * 100).toFixed(2) +
+        '%' +
+        ` (${counter}/${predictions.length} correctly classified)`
+    )
+  }
 }
 module.exports = NaiveBayes
