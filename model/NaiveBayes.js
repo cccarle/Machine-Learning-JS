@@ -15,22 +15,16 @@ Calucate and Standard Deviation for every property of the flowers
 
 class NaiveBayes {
   constructor() {
-    this.x = []
-    this.y = []
-    this.flowerTrainingData = []
-    this.sum = []
+    this.trainingData = []
     this.categories = []
     this.predictions = []
   }
 
   fit(x, y) {
-    dividedByCategory(this.flowerTrainingData, x, y)
-    calculateMeanForEveryProperty(this.flowerTrainingData)
-    calculateStandardDeviationForEveryProperty(this.flowerTrainingData)
-    createObjMeanAndStdValueForEachCategory(
-      this.flowerTrainingData,
-      this.categories
-    )
+    dividedByCategory(this.trainingData, x, y)
+    calculateMeanForEveryProperty(this.trainingData)
+    calculateStandardDeviationForEveryProperty(this.trainingData)
+    createObjMeanAndStdValueForEachCategory(this.trainingData, this.categories)
   }
 
   pdf(x, mean, std) {
@@ -85,18 +79,18 @@ class NaiveBayes {
     let counter = 0
 
     for (let i = 0; i < y.length; i++) {
-      if (predictions[i].label === y[i].species) {
+      if (predictions[i].label === y[i]) {
         counter++
       }
     }
 
     let score = counter / predictions.length
-
-    console.log(
+    let accuracy =
       (score * 100).toFixed(2) +
-        '%' +
-        ` (${counter}/${predictions.length} correctly classified)`
-    )
+      '%' +
+      ` (${counter}/${predictions.length} correctly classified)`
+
+    return accuracy
   }
 }
 module.exports = NaiveBayes
