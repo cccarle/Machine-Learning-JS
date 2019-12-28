@@ -1,6 +1,7 @@
 const neatCsv = require('neat-csv')
 const fs = require('fs')
 const iris_path = './iris.csv'
+const bank_path = './banknote_authentication.csv'
 
 /* 
 Convert CSV-file to an array of objects with the content from the CSV-file.
@@ -63,36 +64,27 @@ Convert CSV-file to an array of objects with the content from the CSV-file.
 const bank_data = async () => {
   let bank_data = []
 
-  let bankData = await neatCsv(fs.createReadStream(iris_path), {
+  let bankData = await neatCsv(fs.createReadStream(bank_path), {
     separator: ','
   })
 
-  // const iris_setosa = bankData.filter(flower => flower.species == 'Iris-setosa')
+  convertBankPropertiesToFloats(bankData, bank_data)
 
-  // iris_setosa.map(flower => (flower.species = 0))
+  const labels = bank_data.map(bank_property => bank_property[4])
 
-  // const iris_versicolor = bankData.filter(
-  //   flower => flower.species == 'Iris-versicolor'
-  // )
+  return { bank_data, labels }
+}
 
-  // iris_versicolor.map(flower => (flower.species = 1))
-
-  // const iris_virginica = bankData.filter(
-  //   flower => flower.species == 'Iris-virginica'
-  // )
-
-  // iris_virginica.map(flower => (flower.species = 2))
-
-  // let intLabeledFlowers = iris_setosa
-  //   .concat(iris_versicolor)
-  //   .concat(iris_virginica)
-
-  //convertFlowerPropertiesToFloats(intLabeledFlowers, bank_data)
-
-  // const labels = bank_data.map(flower => flower[4])
-
-  console.log(bankData)
-  return { bank_data }
+const convertBankPropertiesToFloats = (bank, bank_data) => {
+  bank.map((bank_property, i) =>
+    bank_data.push({
+      '0': parseFloat(bank_property['variance of Wavelet Transformed image']),
+      '1': parseFloat(bank_property['skewness of Wavelet Transformed image']),
+      '2': parseFloat(bank_property['curtosis of Wavelet Transformed image']),
+      '3': parseFloat(bank_property['entropy of image']),
+      '4': parseFloat(bank_property['class '])
+    })
+  )
 }
 
 module.exports = {
